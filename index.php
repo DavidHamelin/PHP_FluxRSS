@@ -8,13 +8,28 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
     <!--Let browser know website is optimized for mobile-->
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <?php
+      if (isset($_POST['red']))
+      {
+        ?> <link rel="stylesheet" href="style03.css"> <?php
+      }
+      elseif (isset($_POST['blue']))
+      {
+        ?> <link rel="stylesheet" href="style02.css"> <?php
+      }
+      else
+      {
+        ?> <link rel="stylesheet" href="style01.css"> <?php
+      }
+      
+    ?>
     <title>Super RSS Reader</title>
   </head>
 
   <body>
 
     <header>
-      <h1 class="center-align teal-text">Super RSS Reader</h1>
+      <h1 class="center-align">Super RSS Reader</h1>
     </header>
 
     <nav>
@@ -26,7 +41,13 @@
         </ul>
         <ul id="navParams" class="right hide-on-med-and-down">
           <li><a href="sass.html">Nom Prénom</a></li>
-          <li><a href="badges.html">Paramètres</a></li>
+          <li>
+          <form action="index.php" method="post">
+          <button type="submit" id="default" name="default" class="btn gray">default</button>
+          <button type="submit" id="blue" name="blue" class="btn orange">halloween</button>
+          <button type="submit" id="red" name="red" class="btn black">dark</button>
+          </form>
+          </li>
         </ul>
       </div>
     </nav>
@@ -34,61 +55,52 @@
   <section class="row container">
 
     <article class="col s4">
-      <ul class="collection">
-        <li class="collection-item avatar">
-          <img src="images/yuna.jpg" alt="" class="circle">
-          <span class="title">Title</span>
-          <p>First Line <br>
-            Second Line
-          </p>
-          <a href="#!" class="secondary-content"><i class="material-icons">grade</i></a>
-        </li>
-        <li class="collection-item avatar">
-          <i class="material-icons circle">folder</i>
-          <span class="title">Title</span>
-          <p>First Line <br>
-            Second Line
-          </p>
-          <a href="#!" class="secondary-content"><i class="material-icons">grade</i></a>
-        </li>
-        <li class="collection-item avatar">
-          <i class="material-icons circle green">insert_chart</i>
-          <span class="title">Title</span>
-          <p>First Line <br>
-            Second Line
-          </p>
-          <a href="#!" class="secondary-content"><i class="material-icons">grade</i></a>
-        </li>
-        <li class="collection-item avatar">
-          <i class="material-icons circle red">play_arrow</i>
-          <span class="title">Title</span>
-          <p>First Line <br>
-            Second Line
-          </p>
-          <a href="#!" class="secondary-content"><i class="material-icons">grade</i></a>
-        </li>
-      </ul>      
+      <h3>Sécurité</h3>
+        <?php
+        $url = "https://www.01net.com/rss/actualites/securite/"; /* insérer ici l'adresse du flux RSS de votre choix */
+        $rss = simplexml_load_file($url);
+        echo '<ul class="colection">';
+        foreach ($rss->channel->item as $item){
+        $datetime = date_create($item->pubDate);
+        $date = date_format($datetime, 'd M Y, H\hi');
+        echo '<li class="collection-item"><a href="'.$item->link.'">'.'<img src="'.utf8_decode((string)$item->enclosure['url']).'" height="50"/> <span> '.utf8_encode(utf8_decode($item->title)).' </span> </a> ('.$date.')</li>';
+        }
+        echo '</ul>';
+        ?>    
     </article>
 
     <article class="col s4">
-      <ul class="collection">
-        <li class="collection-item">Alvin</li>
-        <li class="collection-item">Alvin</li>
-        <li class="collection-item">Alvin</li>
-        <li class="collection-item">Alvin</li>
-      </ul>
+        <h3>Applis, Logiciels</h3>
+      <?php
+        $url = "https://www.01net.com/rss/actualites/applis-logiciels/"; /* insérer ici l'adresse du flux RSS de votre choix */
+        $rss = simplexml_load_file($url);
+        echo '<ul class="colection">';
+        foreach ($rss->channel->item as $item){
+        $datetime = date_create($item->pubDate);
+        $date = date_format($datetime, 'd M Y, H\hi');
+        echo '<li class="collection-item"><a href="'.$item->link.'">'.'<img src="'.utf8_decode((string)$item->enclosure['url']).'" height="50"/> <span> '.utf8_encode(utf8_decode($item->title)).' </span> </a> ('.$date.')</li>';
+        }
+        echo '</ul>';
+      ?> 
     </article>
 
     <article class="col s4">
-      <ul class="collection">
-        <li class="collection-item">Alvin</li>
-        <li class="collection-item">Alvin</li>
-        <li class="collection-item">Alvin</li>
-        <li class="collection-item">Alvin</li>
-      </ul>
+        <h3>Jeux</h3>
+      <?php
+        $url = "https://www.01net.com/rss/actualites/jeux/"; /* insérer ici l'adresse du flux RSS de votre choix */
+        $rss = simplexml_load_file($url);
+        echo '<ul class="colection">';
+        foreach ($rss->channel->item as $item){
+        $datetime = date_create($item->pubDate);
+        $date = date_format($datetime, 'd M Y, H\hi');
+        echo '<li class="collection-item"><a href="'.$item->link.'">'.'<img src="'.utf8_decode((string)$item->enclosure['url']).'" height="50"/> <span> '.utf8_encode(utf8_decode($item->title)).' </span> </a> ('.$date.')</li>';
+        }
+        echo '</ul>';
+      ?> 
     </article>
 
   </section>
+
 
     <!-- Materialize JS -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
