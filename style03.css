@@ -1,12 +1,17 @@
 h1
 {
-    color: red;
+    color: #ba0000;
 }
-body{
+article ul
+{
+    color: black;
+}
+body, .modal
+{
     background: black;
-    color: white;
+    color: #fdffff;
 }
 nav
 {
-    background: slategray;
+    background: #ba0000;
 }

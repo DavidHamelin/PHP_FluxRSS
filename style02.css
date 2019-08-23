@@ -1,11 +1,13 @@
 h1
 {
-    color: white;
+    color: #086788;
 }
-body{
-    background: purple;
-    color: orange;
+body, .modal
+{
+    background: #f0c808;
+    color: #086788;
 }
 nav{
-    background: darkgray;
+    /* background: #07a0c3; */
+    background:  linear-gradient(to left, #055769, #07a0c3, #055769)
 }

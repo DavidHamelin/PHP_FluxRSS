@@ -1,3 +1,44 @@
+<?php 
+/* TODO
+
+récupérer choix css sheet via cookie
+*/
+
+
+function GetRss($url)
+{
+  $rss = simplexml_load_file($url);
+  echo '<ul class="collection">';
+  foreach ($rss->channel->item as $item){
+  /* date en français */ 
+  setlocale(LC_TIME, 'fr_FR.utf8');
+  $datetime = date_create($item->pubDate);  
+  $dateT = date_format($datetime, 'd-M-Y H:i');
+  $date = strftime('%A %d %B %G, %Hh%M', strtotime($dateT));
+
+  /* IDEE MODAL UNIQUE : id=" item[1]  href="# channel[item]"  ???? */
+    
+  echo '<li class="collection-item avatar"> 
+  <img src="'.utf8_decode((string)$item->enclosure['url']).'" height="50" class="left"/> 
+  <span class="title"> '.utf8_encode(utf8_decode($item->title)).' </span> 
+  <p>('.$date.') </p> 
+  <a href="'.$item->link.'"> Aller vers l\'article </a> <br/>
+  <a href="#modalDescription" class="modal-trigger">Ouvrir Description de l\'article </a> </li>
+  <div id="modalDescription" class="modal">
+      <div class="modal-content">
+        <h4>'.utf8_encode(utf8_decode($item->title)).'</h4>
+        <p>'.utf8_encode(utf8_decode($item->description)).'</p>
+      </div>
+      <div class="modal-footer">
+        <a href="'.$item->link.'"> Aller vers l\'article </a> 
+        <a href="#!" class="modal-close waves-effect waves-green btn-flat">Fermer</a>
+      </div>
+  </div> ';
+  }
+  echo '</ul>';
+}
+?>
+
 <!DOCTYPE html>
 <html>
   <head>
@@ -33,81 +74,122 @@
     </header>
 
     <nav>
-      <div class="nav-wrapper container">
-        <ul id="navSujet" class="left hide-on-med-and-down">
-          <li><a href="sass.html">Sécurité</a></li>
-          <li><a href="badges.html">Applis, Logiciels</a></li>
-          <li><a href="collapsible.html">Jeux</a></li>
-        </ul>
-        <ul id="navParams" class="right hide-on-med-and-down">
-          <li><a href="sass.html">Nom Prénom</a></li>
-          <li>
-          <form action="index.php" method="post">
-          <button type="submit" id="default" name="default" class="btn gray">default</button>
-          <button type="submit" id="blue" name="blue" class="btn orange">halloween</button>
-          <button type="submit" id="red" name="red" class="btn black">dark</button>
-          </form>
-          </li>
-        </ul>
+      <div class="nav-wrapper">
+          <ul id="navSubjects">
+            <li><a href="?sécurité">Sécurité<i class="material-icons left">lock</i></a></li>
+            <li><a href="?applis">Applis, Logiciels<i class="material-icons left">android</i></a></li>
+            <li><a href="?jeux">Jeux<i class="material-icons left">games</i></a></li>
+          </ul> 
+        <div class="right hide-on-med-and-down">
+          <ul id="navParams">
+            <li> <a><i class="material-icons left">perm_identity</i> Nom Prénom </a></li>
+            <li><a href="#modal1" class="modal-trigger"><i class="material-icons left">build</i> Paramètres</a></li>
+          </ul>   
+        </div>
+          
       </div>
     </nav>
 
-  <section class="row container">
+    <div id="modal1" class="modal">
+    <div class="modal-content">
+      <h4>Choisissez un Theme</h4>
+      <form action="index.php" method="post">
+        <button type="submit" id="default" name="default" class="btn gray">default</button>
+        <button type="submit" id="blue" name="blue" class="btn orange">submarine</button>
+        <button type="submit" id="red" name="red" class="btn black">dark</button>
+    </form>
+    </div>
+    <div class="modal-footer">
+      <a href="#!" class="modal-close waves-effect waves-green btn-flat">Fermer</a>
+    </div>
+  </div>
+  
+  <?php
+  if (isset($_GET['sécurité']) || (isset($_GET['applis'])) || (isset($_GET['jeux'])) )
+  {
+        if (isset($_GET['sécurité']))
+        {
+        $url = "https://www.01net.com/rss/actualites/securite/";
+        }
+        if (isset($_GET['applis']))
+        {
+        $url = "https://www.01net.com/rss/actualites/applis-logiciels/";
+        }
+        if (isset($_GET['jeux']))
+        {
+        $url = "https://www.01net.com/rss/actualites/jeux/";
+        }
+        $rss = simplexml_load_file($url);
+        echo '<div class="row">';
+        foreach ($rss->channel->item as $item){
+        setlocale(LC_TIME, 'fr_FR.utf8');
+        $datetime = date_create($item->pubDate);  
+        $dateT = date_format($datetime, 'd-M-Y H:i');
+        $date = strftime('%A %d %B %G, %Hh%M', strtotime($dateT));
+        echo '<div class="col s4 m4">
+        <div class="card small">
+        <div class="card-image">
+        <img src="'.utf8_decode((string)$item->enclosure['url']).'">
+            <span class="card-title">'.utf8_encode(utf8_decode($item->title)).'</span>
+            </div>
+              <div class="card-content">
+                <p>('.$date.') </p> 
+                <a href="#modalSécu" class="modal-trigger">Ouvrir Description de l\'article </a>
+              </div>
+              <div class="card-action">
+              <a href="'.$item->link.'"> Aller vers l\'article </a>
+              
+              </div>
+            </div>
+          </div>
+          ';
+        }
+      echo '</div>';
+        }
+        else
+        {
+        ?>    
+
+  <section class="row">
 
     <article class="col s4">
-      <h3>Sécurité</h3>
+      <h4>Sécurité</h4>
         <?php
         $url = "https://www.01net.com/rss/actualites/securite/"; /* insérer ici l'adresse du flux RSS de votre choix */
-        $rss = simplexml_load_file($url);
-        echo '<ul class="colection">';
-        foreach ($rss->channel->item as $item){
-        $datetime = date_create($item->pubDate);
-        $date = date_format($datetime, 'd M Y, H\hi');
-        echo '<li class="collection-item"><a href="'.$item->link.'">'.'<img src="'.utf8_decode((string)$item->enclosure['url']).'" height="50"/> <span> '.utf8_encode(utf8_decode($item->title)).' </span> </a> ('.$date.')</li>';
-        }
-        echo '</ul>';
+        GetRss($url);
         ?>    
     </article>
 
     <article class="col s4">
-        <h3>Applis, Logiciels</h3>
+        <h4>Applis, Logiciels</h4>
       <?php
         $url = "https://www.01net.com/rss/actualites/applis-logiciels/"; /* insérer ici l'adresse du flux RSS de votre choix */
-        $rss = simplexml_load_file($url);
-        echo '<ul class="colection">';
-        foreach ($rss->channel->item as $item){
-        $datetime = date_create($item->pubDate);
-        $date = date_format($datetime, 'd M Y, H\hi');
-        echo '<li class="collection-item"><a href="'.$item->link.'">'.'<img src="'.utf8_decode((string)$item->enclosure['url']).'" height="50"/> <span> '.utf8_encode(utf8_decode($item->title)).' </span> </a> ('.$date.')</li>';
-        }
-        echo '</ul>';
+        GetRss($url);
       ?> 
     </article>
 
     <article class="col s4">
-        <h3>Jeux</h3>
+        <h4>Jeux</h4>
       <?php
         $url = "https://www.01net.com/rss/actualites/jeux/"; /* insérer ici l'adresse du flux RSS de votre choix */
-        $rss = simplexml_load_file($url);
-        echo '<ul class="colection">';
-        foreach ($rss->channel->item as $item){
-        $datetime = date_create($item->pubDate);
-        $date = date_format($datetime, 'd M Y, H\hi');
-        echo '<li class="collection-item"><a href="'.$item->link.'">'.'<img src="'.utf8_decode((string)$item->enclosure['url']).'" height="50"/> <span> '.utf8_encode(utf8_decode($item->title)).' </span> </a> ('.$date.')</li>';
-        }
-        echo '</ul>';
+        GetRss($url);
       ?> 
     </article>
 
   </section>
+        <?php } ?>
 
-
+  <script
+			  src="https://code.jquery.com/jquery-3.4.1.min.js"
+			  integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+			  crossorigin="anonymous"></script>
     <!-- Materialize JS -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
     <script>
-      document.addEventListener('DOMContentLoaded', function() {
-      var elems = document.querySelectorAll('.dropdown-trigger');
-      var instances = M.Dropdown.init(elems, options);
+      $(document).ready(function(){
+        $('.modal').modal();
+        
+        $('select').formSelect();
       });
   </script>
   </body>
