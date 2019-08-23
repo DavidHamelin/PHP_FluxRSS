@@ -2,6 +2,8 @@
 /* TODO
 
 récupérer choix css sheet via cookie
+
+this : descriptions rss differentes
 */
 
 
