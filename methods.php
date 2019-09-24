@@ -1,5 +1,6 @@
 <?php
-// Traitement des données :
+///////////////// TRAITEMENT DONNEES /////////////////
+
 if( isset($_POST['red']) || (isset($_POST['theme']) && ($_POST['theme'] == "red")) )
 {
   $_SESSION['color'] = "red";
@@ -23,10 +24,31 @@ if(isset($_POST['choice']))
 {
   $_SESSION['choice'] = $_POST['choice'];
 }
-// if (isset($_POST['red'])){
-// $red = $_POST['red'];
-// setcookie('red', $red, time() + 365*24*3600, null, null, false, true);
-// }
+
+//////////////////// FONCTIONS //////////////////////
+
+function CheckCSSLink()
+{
+  if (isset($_SESSION['color']))
+  {
+    if ($_SESSION['color'] == "red")
+    {
+      ?> <link rel="stylesheet" href="style03.css"> <?php
+    }
+    elseif ($_SESSION['color'] == "blue")
+    {
+      ?> <link rel="stylesheet" href="style02.css"> <?php
+    }
+    else
+    {
+      ?> <link rel="stylesheet" href="style01.css"> <?php
+    }
+  }
+  else
+  {
+    ?> <link rel="stylesheet" href="style01.css"> <?php
+  }
+}
 
 function GetRssCollection($url, $titre)
 {
@@ -123,7 +145,8 @@ $rss = simplexml_load_file($url);
   echo '</div>';
 }
 
-// Déconnexion
+/////////////// DECONNEXION ////////////////
+
 if(isset($_POST['logOut']))
 {
   unset($_SESSION['login']);
