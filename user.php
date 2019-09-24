@@ -12,8 +12,13 @@
             <option value="blue">Submarine</option>
             <option value="red">Dark</option>
         </select>
+        <label for="choice">Nombre d'articles sur la page d'accueil</label>
+        <select name="choice" id="choice" >
+            <option value="3">3</option>
+            <option value="5">5</option>
+            <option value="8">8</option>
+        </select>
         <input class="btn" type="submit" id="send" value="Envoyer"/>
     </form>
 </div>
-
 <br/>

@@ -1,9 +1,44 @@
 <?php
+// Traitement des données :
+if( isset($_POST['red']) || (isset($_POST['theme']) && ($_POST['theme'] == "red")) )
+{
+  $_SESSION['color'] = "red";
+}
+if( isset($_POST['blue']) || (isset($_POST['theme']) && ($_POST['theme'] == "blue")) )
+{
+  $_SESSION['color'] = "blue";
+}
+if( isset($_POST['default']) || (isset($_POST['theme']) && ($_POST['theme'] == "default")) )
+{
+  $_SESSION['color'] = "default";
+}
+
+if ( isset($_POST['login']) && isset($_POST['password']) )
+{
+  $_SESSION['login'] = $_POST['login'];
+  $_SESSION['password'] = $_POST['password'];
+}
+
+if(isset($_POST['choice']))
+{
+  $_SESSION['choice'] = $_POST['choice'];
+}
+// if (isset($_POST['red'])){
+// $red = $_POST['red'];
+// setcookie('red', $red, time() + 365*24*3600, null, null, false, true);
+// }
+
 function GetRssCollection($url, $titre)
 {
   $rss = simplexml_load_file($url);
   echo '<ul class="collection">';
   $modalID = 1;
+  $count = 0;
+  $limit = $_SESSION['choice'];
+  if(!isset($_SESSION['choice']) || ($_SESSION['choice'] == 0) )
+  {
+    $limit = 8;
+  }
   foreach ($rss->channel->item as $item){
   /* date en français */ 
   setlocale(LC_TIME, 'fr_FR.utf8');
@@ -12,7 +47,7 @@ function GetRssCollection($url, $titre)
   $date = strftime('%A %d %B %G, %Hh%M', strtotime($dateT));
 
   echo '
-  <li class="collection-item avatar"> 
+  <li class="collection-item"> 
     <img src="'.utf8_decode((string)$item->enclosure['url']).'" height="50" class="left"/> 
     <span class="title"> '.utf8_encode(utf8_decode($item->title)).' </span> 
     <p>('.$date.') </p> 
@@ -27,10 +62,15 @@ function GetRssCollection($url, $titre)
       </div>
       <div class="modal-footer">
         <a href="'.$item->link.'"> Aller vers l\'article </a> 
-        <a href="#!" class="modal-close waves-effect waves-green btn-flat">Fermer</a>
+        <a class="modal-close waves-effect waves-green btn-flat">Fermer</a>
       </div>
   </div>';
   $modalID++;
+  $count++;
+    if($count == $limit)
+    {
+      break;
+    }
   }
   echo '</ul>';
 }
@@ -70,7 +110,7 @@ $rss = simplexml_load_file($url);
                 </div>
                 <div class="modal-footer">
                   <a href="'.$item->link.'"> Aller vers l\'article </a> 
-                  <a href="#!" class="modal-close waves-effect waves-green btn-flat">Fermer</a>
+                  <a class="modal-close waves-effect waves-green btn-flat">Fermer</a>
                 </div>
               </div>
             </div>
@@ -83,12 +123,13 @@ $rss = simplexml_load_file($url);
   echo '</div>';
 }
 
-
+// Déconnexion
 if(isset($_POST['logOut']))
 {
   unset($_SESSION['login']);
   unset($_SESSION['password']);
   unset($_SESSION['color']);
+  unset($_SESSION['choice']);
   // Refresh puis redirect
   // header("Refresh:0; url=page2.php");
   header("Refresh:0");

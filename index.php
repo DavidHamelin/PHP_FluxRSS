@@ -3,30 +3,6 @@
 session_start();
 // effacer les éléments d'une session :
 // unset($_SESSION['blue']);
-if( isset($_POST['red']) || (isset($_POST['theme']) && ($_POST['theme'] == "red")) )
-{
-  $_SESSION['color'] = "red";
-}
-if( isset($_POST['blue']) || (isset($_POST['theme']) && ($_POST['theme'] == "blue")) )
-{
-  $_SESSION['color'] = "blue";
-}
-if( isset($_POST['default']) || (isset($_POST['theme']) && ($_POST['theme'] == "default")) )
-{
-  $_SESSION['color'] = "default";
-}
-
-if ( isset($_POST['login']) && isset($_POST['password']) )
-{
-  $_SESSION['login'] = $_POST['login'];
-  $_SESSION['password'] = $_POST['password'];
-}
-
-// if (isset($_POST['red'])){
-// $red = $_POST['red'];
-// setcookie('red', $red, time() + 365*24*3600, null, null, false, true);
-// }
-
 include("methods.php");
 ?>
 
@@ -82,32 +58,7 @@ include("methods.php");
     <header>
       <h1 class="center-align"> <a href="http://www.rssfeed.info/index.php">Super RSS Reader</a> </h1>
       <?php
-      if( (isset($_SESSION['login']) && isset($_SESSION['password'])) 
-      && ( ($_SESSION['login'] == "Admin") && ($_SESSION['password'] == "goliath") ) )
-      {
-        ?>
-        <h3 class="center-align"><i class="material-icons medium">star_border</i> Super User <i class="material-icons medium">star_border</i></h3> 
-        <br/>
-        <?php
-        ///////////// TESTS ////////////
-        echo 'POST : ';
-        print_r($_POST);
-        echo '<br/> DETAILS POST : ';
-        var_dump($_POST);
-        echo '<br/> SESSION : ';
-        print_r($_SESSION);
-        echo '<br/> DETAILS SESSION : ';
-        var_dump($_SESSION);
-        echo '<br/> COOKIES : ';
-        print_r($_COOKIE);
-        echo '<br/> DETAILS COOKIES';
-        var_dump($_COOKIE);
-        echo '<br/> ';
-        echo '<br/> ';
-        /////////// FIN TESTS //////////
-        ?>
-        <?php
-      }
+      include("superUser.php");
       ?>
     </header>
 
@@ -144,14 +95,14 @@ include("methods.php");
 
     <div id="modalParams" class="modal">
       <div class="modal-content">
-        <h4>Choisissez un Theme</h4>
+        <h4>Choisissez un Theme :</h4>
           <form action="index.php" method="post">
             <button type="submit" id="default" name="default" class="btn gray">default</button>
             <button type="submit" id="blue" name="blue" class="btn orange">submarine</button>
             <button type="submit" id="red" name="red" class="btn black">dark</button>
             <br/>
-            <hr/>          
-            <button type="submit" id="logOut" name="logOut" class="btn-floating btn-small waves-effect waves-light red"><i class="material-icons">power_settings_new</i></button>
+            <hr/>
+            <button type="submit" id="logOut" name="logOut" class="btn red"><i class="material-icons left">power_settings_new</i> Déconnexion </button>
           </form>
       </div>
       <div class="modal-footer">
