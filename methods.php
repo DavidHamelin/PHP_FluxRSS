@@ -82,4 +82,15 @@ $rss = simplexml_load_file($url);
     }
   echo '</div>';
 }
+
+
+if(isset($_POST['logOut']))
+{
+  unset($_SESSION['login']);
+  unset($_SESSION['password']);
+  unset($_SESSION['color']);
+  // Refresh puis redirect
+  // header("Refresh:0; url=page2.php");
+  header("Refresh:0");
+}
 ?>

@@ -1,9 +1,7 @@
 <?php 
-/* TODO :
-this : descriptions rss differentes
-*/
 
 session_start();
+// effacer les éléments d'une session :
 // unset($_SESSION['blue']);
 if( isset($_POST['red']) || (isset($_POST['theme']) && ($_POST['theme'] == "red")) )
 {
@@ -16,6 +14,12 @@ if( isset($_POST['blue']) || (isset($_POST['theme']) && ($_POST['theme'] == "blu
 if( isset($_POST['default']) || (isset($_POST['theme']) && ($_POST['theme'] == "default")) )
 {
   $_SESSION['color'] = "default";
+}
+
+if ( isset($_POST['login']) && isset($_POST['password']) )
+{
+  $_SESSION['login'] = $_POST['login'];
+  $_SESSION['password'] = $_POST['password'];
 }
 
 // if (isset($_POST['red'])){
@@ -62,22 +66,58 @@ include("methods.php");
 
   <body>
     <?php
-    print_r($_POST);
-    echo '<br/> ';
-    print_r($_SESSION);
-    echo '<br/> ';
-    var_dump($_SESSION);
+    ///////////// TESTS ////////////
+    // print_r($_POST);
+    // echo '<br/> ';
+    // print_r($_SESSION);
+    // echo '<br/> ';
+    // var_dump($_SESSION);
     // echo '<br/> ';
     // print_r($_COOKIE);
     // echo '<br/> ';
     // echo 'salut : ' . $_COOKIE['red'];
+    /////////// FIN TESTS //////////
     ?>
+
     <header>
-      <h1 class="center-align">Super RSS Reader</h1>
+      <h1 class="center-align"> <a href="http://www.rssfeed.info/index.php">Super RSS Reader</a> </h1>
+      <?php
+      if( (isset($_SESSION['login']) && isset($_SESSION['password'])) 
+      && ( ($_SESSION['login'] == "Admin") && ($_SESSION['password'] == "goliath") ) )
+      {
+        ?>
+        <h3 class="center-align"><i class="material-icons medium">star_border</i> Super User <i class="material-icons medium">star_border</i></h3> 
+        <br/>
+        <?php
+        ///////////// TESTS ////////////
+        echo 'POST : ';
+        print_r($_POST);
+        echo '<br/> DETAILS POST : ';
+        var_dump($_POST);
+        echo '<br/> SESSION : ';
+        print_r($_SESSION);
+        echo '<br/> DETAILS SESSION : ';
+        var_dump($_SESSION);
+        echo '<br/> COOKIES : ';
+        print_r($_COOKIE);
+        echo '<br/> DETAILS COOKIES';
+        var_dump($_COOKIE);
+        echo '<br/> ';
+        echo '<br/> ';
+        /////////// FIN TESTS //////////
+        ?>
+        <?php
+      }
+      ?>
     </header>
 
     <?php
-    include("user.php");
+    if(!isset($_SESSION['login']) || !isset($_SESSION['password']))
+    {
+      include("user.php");
+    }
+    else
+    { 
     ?>
 
     <nav>
@@ -91,8 +131,8 @@ include("methods.php");
         <div class="right hide-on-med-and-down">
           <ul id="navParams">
             <li> <a><i class="material-icons left">perm_identity</i> Bonjour <?php
-             if(isset($_POST["login"])) {
-              echo $_POST["login"];
+             if(isset($_SESSION["login"])) {
+              echo $_SESSION["login"];
              }
              ?> </a></li>
             <li><a href="#modalParams" class="modal-trigger"><i class="material-icons left">build</i> Paramètres</a></li>
@@ -109,10 +149,13 @@ include("methods.php");
             <button type="submit" id="default" name="default" class="btn gray">default</button>
             <button type="submit" id="blue" name="blue" class="btn orange">submarine</button>
             <button type="submit" id="red" name="red" class="btn black">dark</button>
+            <br/>
+            <hr/>          
+            <button type="submit" id="logOut" name="logOut" class="btn-floating btn-small waves-effect waves-light red"><i class="material-icons">power_settings_new</i></button>
           </form>
       </div>
       <div class="modal-footer">
-        <a href="#!" class="modal-close waves-effect waves-green btn-flat">Fermer</a>
+        <a class="modal-close waves-effect waves-green btn-flat">Fermer</a>
       </div>
     </div>
   
@@ -176,7 +219,11 @@ include("methods.php");
     </article>
 
   </section>
-        <?php } ?>
+      <?php } ?>
+
+    <?php
+    }
+    ?>      
 
 
   <script
@@ -187,9 +234,15 @@ include("methods.php");
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
     <script>
       $(document).ready(function(){
-        $('.modal').modal();
+        $(".modal").modal();
         
-        $('select').formSelect();
+        $("select").formSelect();
+
+        // $("select").on("change", function() {
+        // var y = $(this).val();
+        // // alert(y);
+        // $("body").css("background-color", y);
+        // });
       });
   </script>
   </body>

@@ -1,6 +1,12 @@
 h1
 {
-    color: #086788;
+    color: #07a0c3;
+}
+header a, header a:hover, header a:visited, header a:active
+{
+    color:#07a0c3;
+    text-decoration: none;
+    font-weight: 6em;
 }
 body, .modal
 {

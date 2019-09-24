@@ -1,4 +1,4 @@
-<h3 class="center-align">Utilisateur</h3>
+<h3 class="center-align">Connexion</h3>
 
 <div class="container">
     <form class="container" method="post" action="index.php">
