@@ -10,7 +10,7 @@
           <ul id="navParams">
             <li><i class="material-icons left">perm_identity</i> Bonjour <?php
              if(isset($_SESSION["login"])) {
-              echo $_SESSION["login"];
+              echo htmlspecialchars($_SESSION["login"]);
              }
              ?>
              </li>
