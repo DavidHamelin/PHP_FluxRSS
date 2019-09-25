@@ -37,9 +37,9 @@ include("methods.php");
       include("user.php");
     }
     else
-    { 
-    include("navbar.php");
-    include("articles.php");
+    {
+      include("navbar.php");
+      include("articles.php");
     }
     ?>
 

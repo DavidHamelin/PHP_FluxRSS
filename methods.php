@@ -16,8 +16,22 @@ if( isset($_POST['default']) || (isset($_POST['theme']) && ($_POST['theme'] == "
 
 if ( isset($_POST['login']) && isset($_POST['password']) )
 {
-  $_SESSION['login'] = $_POST['login'];
-  $_SESSION['password'] = $_POST['password'];
+  if( ($_POST['login'] == "") ||
+  ($_POST['password'] == "") ||
+  ($_POST['login'] == " ") ||
+  ($_POST['password'] == " ") ||
+  ($_POST['login'] == null) ||
+  ($_POST['password'] == null) )
+  {
+    header("Location: http://www.rssfeed.info/error.php");
+    // exit();
+  }
+  else
+  {
+    $_SESSION['login'] = $_POST['login'];
+    $_SESSION['password'] = $_POST['password'];
+  }
+
 }
 
 if(isset($_POST['choice']))
