@@ -114,6 +114,7 @@ function GetRssCollection($url, $titre)
 function GetRssCard($url)
 {
 $rss = simplexml_load_file($url);
+    echo '<h4 class="center-align">'.$rss->channel->title.'</h4>';
     echo '<div class="row">';
     $test = 1;
     foreach ($rss->channel->item as $item){

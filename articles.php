@@ -1,29 +1,27 @@
 <?php
-    if (isset($_GET['sécurité']) || (isset($_GET['applis'])) || (isset($_GET['jeux'])) )
+    if (isset($_GET['sécurité']) || (isset($_GET['applis'])) || (isset($_GET['jeux'])) || (isset($_POST['customRss'])) )
     {
+      // if(isset($_POST['customRss']) && (preg_match("#(https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|www\.[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9]+\.[^\s]{2,}|www\.[a-zA-Z0-9]+\.[^\s]{2,})#", $_POST['customRss'])))
+      if(isset($_POST['customRss']))
+      {
+        // $test = $_POST['customRss'];
+        // if(startsWith($test, "https://www.01net.com/rss/"))
+        //   {
+        //     $url = $test;
+        //   }
+        $url = 'https://www.01net.com/rss/'.$_POST['customRss'];
+      }
       if (isset($_GET['sécurité']))
       {
-        ?>
-        <h4 class="center-align">Sécurité</h4>
-        <?php
         $url = "https://www.01net.com/rss/actualites/securite/";
-        
       }
       if (isset($_GET['applis']))
       {
-        ?>
-        <h4 class="center-align">Applis, Logiciels</h4>
-        <?php
         $url = "https://www.01net.com/rss/actualites/applis-logiciels/";
-        
       }
       if (isset($_GET['jeux']))
       {
-        ?>
-        <h4 class="center-align">Jeux</h4>
-        <?php
         $url = "https://www.01net.com/rss/actualites/jeux/";
-        
       }
       GetRssCard($url);
     }
