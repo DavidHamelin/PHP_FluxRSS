@@ -66,7 +66,10 @@ function CheckCSSLink()
 function GetRssCollection($url, $titre)
 {
   $rss = simplexml_load_file($url);
-  echo '<h4 class="center-align">'.$rss->channel->title.'</h4>';
+  $titlestr = $rss->channel->title;
+  $titleClean = str_replace("- 01net","", $titlestr);
+  // var_dump($titleClean);
+  echo '<h4 class="center-align">'.$titleClean.'</h4>';
   echo '<ul class="collection">';
   $modalID = 1;
   $count = 0;
@@ -113,50 +116,52 @@ function GetRssCollection($url, $titre)
 
 function GetRssCard($url)
 {
-$rss = simplexml_load_file($url);
-    echo '<h4 class="center-align">'.$rss->channel->title.'</h4>';
-    echo '<div class="row">';
-    $test = 1;
-    foreach ($rss->channel->item as $item){
-    setlocale(LC_TIME, 'fr_FR.utf8');
-    $datetime = date_create($item->pubDate);  
-    $dateT = date_format($datetime, 'd-M-Y H:i');
-    $date = strftime('%A %d %B %G, %Hh%M', strtotime($dateT));
+  $rss = simplexml_load_file($url);
+  $titlestr = $rss->channel->title;
+  $titleClean = str_replace("- 01net","", $titlestr);
+  echo '<h4 class="center-align">'.$titleClean.'</h4>';
+  echo '<div class="row">';
+  $test = 1;
+  foreach ($rss->channel->item as $item){
+  setlocale(LC_TIME, 'fr_FR.utf8');
+  $datetime = date_create($item->pubDate);  
+  $dateT = date_format($datetime, 'd-M-Y H:i');
+  $date = strftime('%A %d %B %G, %Hh%M', strtotime($dateT));
 
-    echo '
-    <div class="col s4 m4">
-      <div class="card small">
+  echo '
+  <div class="col s4 m4">
+    <div class="card small">
 
-        <div class="card-image">
-          <img src="'.utf8_decode((string)$item->enclosure['url']).'">
-          <span class="card-title">'.utf8_encode(utf8_decode($item->title)).'</span>
-        </div>
+      <div class="card-image">
+        <img src="'.utf8_decode((string)$item->enclosure['url']).'">
+        <span class="card-title">'.utf8_encode(utf8_decode($item->title)).'</span>
+      </div>
 
-        <div class="card-content">
-          <p>('.$date.') </p> 
-          <a href="#modal'.$test.'" class="modal-trigger">Ouvrir Description de l\'article </a>
-        </div>
+      <div class="card-content">
+        <p>('.$date.') </p> 
+        <a href="#modal'.$test.'" class="modal-trigger">Ouvrir Description de l\'article </a>
+      </div>
 
-            <div class="card-action">
-              <a href="'.$item->link.'"> Aller vers l\'article </a>
+          <div class="card-action">
+            <a href="'.$item->link.'"> Aller vers l\'article </a>
 
-              <div id="modal'.$test.'" class="modal">
-                <div class="modal-content">
-                  <h4>'.utf8_encode(utf8_decode($item->title)).'</h4>
-                  <p>'.utf8_encode(utf8_decode($item->description)).'</p>
-                </div>
-                <div class="modal-footer">
-                  <a href="'.$item->link.'"> Aller vers l\'article </a> 
-                  <a class="modal-close waves-effect waves-green btn-flat">Fermer</a>
-                </div>
+            <div id="modal'.$test.'" class="modal">
+              <div class="modal-content">
+                <h4>'.utf8_encode(utf8_decode($item->title)).'</h4>
+                <p>'.utf8_encode(utf8_decode($item->description)).'</p>
+              </div>
+              <div class="modal-footer">
+                <a href="'.$item->link.'"> Aller vers l\'article </a> 
+                <a class="modal-close waves-effect waves-green btn-flat">Fermer</a>
               </div>
             </div>
+          </div>
 
-      </div>
     </div>
-      ';
-      $test++;
-    }
+  </div>
+    ';
+    $test++;
+  }
   echo '</div>';
 }
 
