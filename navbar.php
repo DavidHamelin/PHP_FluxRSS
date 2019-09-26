@@ -4,19 +4,6 @@
           <li><a href="?sécurité">Sécurité<i class="material-icons left">lock</i></a></li>
           <li><a href="?applis">Applis, Logiciels<i class="material-icons left">android</i></a></li>
           <li><a href="?jeux">Jeux<i class="material-icons left">games</i></a></li>
-          <!-- <li> 
-          <label for="customRss">"https://www.01net.com/rss/"</label>
-          <input type="text" id="customRss" name="customRss" placeholder="entrez une url de flux rss"/>
-          </li> -->
-          <?php
-          // if(isset($_POST["customRSS"]))
-          // {
-          ?>
-          <!-- <li><a href="?custom">Custom<i class="material-icons left">border_color</i></a></li> -->
-          <?php
-          // }
-          ?>
-
         </ul> 
 
         <div class="right hide-on-med-and-down">

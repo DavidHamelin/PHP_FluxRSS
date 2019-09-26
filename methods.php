@@ -31,7 +31,6 @@ if ( isset($_POST['login']) && isset($_POST['password']) )
     $_SESSION['login'] = $_POST['login'];
     $_SESSION['password'] = $_POST['password'];
   }
-
 }
 
 if(isset($_POST['choice']))
@@ -67,6 +66,7 @@ function CheckCSSLink()
 function GetRssCollection($url, $titre)
 {
   $rss = simplexml_load_file($url);
+  echo '<h4 class="center-align">'.$rss->channel->title.'</h4>';
   echo '<ul class="collection">';
   $modalID = 1;
   $count = 0;
