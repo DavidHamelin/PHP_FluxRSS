@@ -60,7 +60,7 @@
     }
 
     </style>
-    <title>Super RSS Reader</title>
+    <title>404 ERROR - Super RSS Reader</title>
   </head>
 
 <body>

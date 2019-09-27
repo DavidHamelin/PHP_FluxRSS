@@ -64,17 +64,19 @@ if( (isset($_SESSION['login']) && isset($_SESSION['password']))
         </select>
       </div>
     </form>
-    
-    <!-- Vidéo bonus -->
-    <form method="post" action="index.php">
-      <button class="btn" type="submit" id="bonus" name="bonus">
-      <i class="material-icons left">mood</i>Bonus </button>
-    </form>
 
+    <!-- Vidéo bonus -->
+    <form method="post" action="index.php" class="input-field">
+      <button class="btn" type="submit" id="bonus" name="bonus">
+      <i class="material-icons left">arrow_downward</i>Bonus </button>
+    </form>
     <?php
     if(isset($_POST["bonus"]))
     {
     ?>
+    <hr/>
+    <a href="spaceinvaders.php" class="btn white">SpaceInvaders</a>
+    <hr/>
     <div class="video-container">
     <iframe width="853" height="480" src="https://www.youtube.com/embed/NjxNnqTcHhg" frameborder="0" allowfullscreen></iframe>
     </div>
